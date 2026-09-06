@@ -7,7 +7,22 @@
 >
 > **Native AOT API · PostgreSQL + pgvector · configurable AI (local or hosted) · internal MCP server.**
 
+![A ticket, answered from the archive](docs/screenshots/ticket-detail.png)
+
+*A customer writes "our shop page opens at the office but not from my house". The archive returns the
+CGNAT ticket first — 59%, matched on **meaning and keyword** — and the drafted answer cites it by
+reference. Nobody typed the words "CGNAT" into the search box, because nobody knew to.*
+
 ---
+
+## Screens
+
+| | |
+|---|---|
+| ![The queue](docs/screenshots/tickets.png) | ![Signing in](docs/screenshots/sign-in.png) |
+| **The queue.** AG Grid above 1024px — column filters, sortable, keyset-paginated. | **Signing in.** Methods are a set, not a choice: the screen shows whatever the deployment turned on. |
+| ![Security](docs/screenshots/security.png) | ![On a phone](docs/screenshots/mobile-light.png) |
+| **Credentials people manage themselves**, and the team card where accounts are created — there is no sign-up form. | **Below 1024px the grid becomes tile cards**, because a data grid on a phone is a data grid nobody reads. Light theme. |
 
 ## Why it exists
 
