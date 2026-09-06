@@ -1,5 +1,8 @@
 # Qərarlar Jurnalı (DECISIONS / ADR)
 
+> **Bu, işçi qeyddir (azərbaycanca).** Oxucular üçün nəzərdə tutulmuş, yenilənən variant:
+> [`docs/decisions.md`](../docs/decisions.md) — ingiliscə. İkisi fərqlənərsə, ingiliscə olan doğrudur.
+
 ## ADR-001 — Platforma və memarlıq
 - Tarix: 2026-09-06 · Status: Qəbul edildi
 - Kontekst: Yeni .NET servisi.

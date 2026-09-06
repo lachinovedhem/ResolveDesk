@@ -24,6 +24,15 @@ reference. Nobody typed the words "CGNAT" into the search box, because nobody kn
 | ![Security](docs/screenshots/security.png) | ![On a phone](docs/screenshots/mobile-light.png) |
 | **Credentials people manage themselves**, and the team card where accounts are created — there is no sign-up form. | **Below 1024px the grid becomes tile cards**, because a data grid on a phone is a data grid nobody reads. Light theme. |
 
+## Documentation
+
+| | |
+|---|---|
+| **[Decision log](docs/decisions.md)** | Twenty decisions with the reasoning — and, where a number was involved, the measurement that settled it. Several record being wrong first. **Start here if you want to know how this was built rather than what it does.** |
+| [User guide](docs/user-guide.md) | For agents and coordinators working the queue |
+| [Administrator guide](docs/administrator-guide.md) | Configuration, accounts, multi-instance, monitoring |
+| [Developer guide](docs/developer-guide.md) | Architecture, schema, the AOT rules, the traps |
+
 ## Why it exists
 
 Support teams solve the same problem repeatedly and lose the answer each time. ResolveDesk keeps a
@@ -505,7 +514,8 @@ src/ResolveDesk.Mcp             MCP server + Semantic Kernel triage agent
 frontend/                       React SPA
 tools/mcp-smoke.mjs             MCP protocol smoke test
 docs/                           user · administrator · developer guides
-project/                        living plan, state, decisions, journal
+docs/                           guides and the decision log
+project/                        working notes (Azerbaijani)
 ```
 
 ## Notes for reviewers
