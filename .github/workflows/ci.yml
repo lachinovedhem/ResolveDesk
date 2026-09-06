@@ -39,17 +39,26 @@ jobs:
         # suite green without running it. The build step above is what fails on a compile error.
         env:
           RESOLVEDESK_TEST_DB: Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres
-        run: dotnet test ResolveDesk.slnx --configuration Release --no-build --logger "console;verbosity=normal"
+        run: >
+          dotnet test ResolveDesk.slnx --configuration Release --no-build
+          --logger "console;verbosity=normal"
+          --logger "trx;LogFileName=results.trx"
+          --results-directory ./test-results
 
       - name: Fail if the database tests were skipped
-        # A green run that skipped every database test looks identical to one that passed them.
-        env:
-          RESOLVEDESK_TEST_DB: Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres
+        # A green run that skipped every database test looks identical to one that passed them, so
+        # the count is asserted rather than trusted. Reads the results the step above already
+        # produced — running the suite twice would double the job for a number it already had.
         run: |
-          dotnet test ResolveDesk.slnx --configuration Release --no-build --logger "trx;LogFileName=results.trx" > /dev/null
-          skipped=$(grep -o 'skipped="[0-9]*"' $(find . -name results.trx | head -1) | grep -o '[0-9]*')
-          echo "skipped: $skipped"
-          test "$skipped" -eq 0
+          set -euo pipefail
+          report=$(find ./test-results -name results.trx | head -1)
+          if [ -z "$report" ]; then echo "No TRX report was produced."; exit 1; fi
+
+          # TRX calls the skipped count notExecuted. Defaulted so a missing attribute fails the
+          # check loudly instead of collapsing an empty string into a silent pass.
+          skipped=$(sed -n 's/.*notExecuted="\([0-9]*\)".*/\1/p' "$report" | head -1)
+          echo "tests skipped: ${skipped:-unknown}"
+          test "${skipped:-unknown}" = "0"
 
   frontend:
     runs-on: ubuntu-latest

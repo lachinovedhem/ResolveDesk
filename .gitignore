@@ -3,6 +3,8 @@ obj/
 *.user
 .env
 app.db
+test-results/
+ci-trx/
 
 # Frontend
 node_modules/
