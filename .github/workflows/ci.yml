@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      # pgvector's image is plain PostgreSQL with the extension already built, which is what the
+      # schema needs to create the embeddings table and its HNSW index.
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build ResolveDesk.slnx --configuration Release --warnaserror
+
+      - name: Test
+        # The database tests report as skipped without this, so an unset variable would turn a whole
+        # suite green without running it. The build step above is what fails on a compile error.
+        env:
+          RESOLVEDESK_TEST_DB: Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres
+        run: dotnet test ResolveDesk.slnx --configuration Release --no-build --logger "console;verbosity=normal"
+
+      - name: Fail if the database tests were skipped
+        # A green run that skipped every database test looks identical to one that passed them.
+        env:
+          RESOLVEDESK_TEST_DB: Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres
+        run: |
+          dotnet test ResolveDesk.slnx --configuration Release --no-build --logger "trx;LogFileName=results.trx" > /dev/null
+          skipped=$(grep -o 'skipped="[0-9]*"' $(find . -name results.trx | head -1) | grep -o '[0-9]*')
+          echo "skipped: $skipped"
+          test "$skipped" -eq 0
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  retrieval-tuning:
+    # Not run in CI: the harness needs an embedding model, and its numbers are a tuning aid rather
+    # than a pass/fail gate. Run it locally after changing models — see the README.
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: node tools/validate-retrieval.mjs

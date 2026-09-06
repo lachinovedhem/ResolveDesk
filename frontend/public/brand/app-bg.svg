@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"
+     aria-hidden="true" focusable="false">
+  <!--
+    Decorative canvas only. Sits behind opaque card surfaces, so it never affects text contrast.
+    Kept as a tiny vector (no raster, no external reference) to stay inside a strict `default-src 'self'` CSP.
+  -->
+  <defs>
+    <radialGradient id="glow-a" cx="18%" cy="12%" r="52%">
+      <stop offset="0%" stop-color="#0d7f6f" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#0d7f6f" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow-b" cx="86%" cy="82%" r="46%">
+      <stop offset="0%" stop-color="#0a695c" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#0a695c" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.5" fill="#0d7f6f" fill-opacity="0.05" />
+    </pattern>
+  </defs>
+  <rect width="1440" height="900" fill="url(#dots)" />
+  <rect width="1440" height="900" fill="url(#glow-a)" />
+  <rect width="1440" height="900" fill="url(#glow-b)" />
+</svg>

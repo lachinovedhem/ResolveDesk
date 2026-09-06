@@ -1,0 +1,103 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: var(--font-ui);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface-canvas text-ink-800 text-ui antialiased;
+    margin: 0;
+  }
+
+  /* The decorative canvas sits behind everything and never intercepts input. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url("/brand/app-bg.svg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .dark body::before {
+    opacity: 0.4;
+  }
+
+  ::selection {
+    background-color: rgb(var(--brand-500) / 0.25);
+    color: rgb(var(--ink-900));
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+    border-radius: var(--radius-control);
+  }
+
+  /* Respect the OS setting: motion becomes instant rather than merely faster. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* The only place the brand display face is allowed. */
+  .brand-word {
+    font-family: var(--font-brand);
+    letter-spacing: -0.02em;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border-strong)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--border-strong));
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/*
+ * AG Grid theming. The grid ships its own CSS variables; mapping them onto our tokens is what keeps
+ * the table visually part of the app in both themes without a single literal colour here.
+ */
+.ag-theme-resolvedesk {
+  --ag-background-color: rgb(var(--surface-2));
+  --ag-foreground-color: rgb(var(--ink-800));
+  --ag-header-background-color: rgb(var(--surface-3));
+  --ag-header-foreground-color: rgb(var(--ink-600));
+  --ag-border-color: rgb(var(--border-subtle));
+  --ag-row-border-color: rgb(var(--border-subtle));
+  --ag-row-hover-color: rgb(var(--brand-50));
+  --ag-selected-row-background-color: rgb(var(--brand-100));
+  --ag-odd-row-background-color: rgb(var(--surface-1));
+  --ag-input-focus-border-color: rgb(var(--brand-500));
+  --ag-font-family: var(--font-ui);
+  --ag-font-size: var(--text-ui);
+  --ag-grid-size: 6px;
+  --ag-border-radius: var(--radius-control);
+  --ag-wrapper-border-radius: var(--radius-card);
+}

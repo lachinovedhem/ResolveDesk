@@ -1,0 +1,46 @@
+# Local dependencies for ResolveDesk. Brings up the database (with pgvector already installed) and,
+# behind a profile, a local model runtime — so the whole product can run without any hosted service
+# and without an API key.
+#
+#   docker compose up -d db                    # database only
+#   docker compose --profile local-ai up -d    # database + Ollama
+#
+# Credentials come from .env (copy .env.example). Nothing here carries a real secret.
+
+services:
+  db:
+    # pgvector's image is plain PostgreSQL with the extension already built, which is what lets the
+    # API's CREATE EXTENSION succeed without a superuser step of your own.
+    image: pgvector/pgvector:pg17
+    container_name: resolvedesk-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-resolvedesk}
+      POSTGRES_USER: ${POSTGRES_USER:-resolvedesk}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-resolvedesk} -d ${POSTGRES_DB:-resolvedesk}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: resolvedesk-ollama
+    profiles: ["local-ai"]
+    restart: unless-stopped
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    # After it starts, pull the two models the defaults expect:
+    #   docker exec resolvedesk-ollama ollama pull qwen2.5-coder:7b
+    #   docker exec resolvedesk-ollama ollama pull nomic-embed-text
+
+volumes:
+  db-data:
+  ollama-models:

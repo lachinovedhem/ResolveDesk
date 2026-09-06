@@ -1,0 +1,15 @@
+bin/
+obj/
+*.user
+.env
+app.db
+
+# Frontend
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local overrides that legitimately hold secrets
+appsettings.Local.json
+appsettings.*.Local.json

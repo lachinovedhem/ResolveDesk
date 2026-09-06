@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>resolvedesk-mcp</AssemblyName>
+    <RootNamespace>ResolveDesk.Mcp</RootNamespace>
+    <!-- Deliberately NOT AOT: Semantic Kernel's planner and function calling need reflection.
+         The API stays AOT; this sidecar is a short-lived stdio process where startup cost is
+         irrelevant, so the trade is the right way round. -->
+    <PublishAot>false</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
+    <!-- One connector covers every provider we support: Ollama, LM Studio and vLLM all serve the
+         OpenAI wire format, so only the endpoint and model differ. -->
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.80.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Shares the domain records with the API so the wire contract cannot drift. -->
+    <ProjectReference Include="..\ResolveDesk.Application\ResolveDesk.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

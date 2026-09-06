@@ -1,0 +1,163 @@
+/*
+ * Design tokens — the single source of truth for every colour, radius, shadow and type step.
+ * Components reference token names only; a literal hex anywhere else is a bug.
+ *
+ * Rebranding this product means editing this file and tailwind.config.ts. Nothing else.
+ *
+ * Colours are space-separated RGB triples so Tailwind's alpha modifiers (bg-brand-500/20) work.
+ */
+
+:root {
+  /* ── Brand ramp: monochrome, one hue. 500 is the primary and the lightest step that still
+        carries --brand-on-primary at >= 4.5:1.
+        Measured (WCAG 2.x relative luminance):
+          light  #ffffff on #0d7f6f = 4.90:1
+          dark   #061c19 on #179e8a = 5.30:1  (see the .dark block) ──────────────────────────── */
+  --brand-50: 236 250 247;
+  --brand-100: 208 243 236;
+  --brand-200: 165 230 219;
+  --brand-300: 108 210 195;
+  --brand-400: 52 176 158;
+  --brand-500: 13 127 111;
+  --brand-600: 10 105 92;
+  --brand-700: 8 84 74;
+  --brand-800: 6 65 57;
+  --brand-900: 4 46 41;
+  --brand-on-primary: 255 255 255;
+  --brand-gradient: linear-gradient(135deg, rgb(var(--brand-700)), rgb(var(--brand-600)) 45%, rgb(var(--brand-500)));
+
+  /* ── Ink ramp: cool-neutral with a faint warm tint, never pure black or pure grey. ─────────── */
+  --ink-50: 249 250 250;
+  --ink-100: 242 244 244;
+  --ink-200: 229 232 232;
+  --ink-300: 208 213 213;
+  --ink-400: 130 139 139;   /* per-theme: muted text on light */
+  --ink-500: 100 110 110;   /* per-theme: secondary text on light */
+  --ink-600: 78 88 88;
+  --ink-700: 58 67 67;
+  --ink-800: 38 46 46;
+  --ink-900: 24 31 31;
+  --ink-950: 15 20 20;
+
+  /* ── Surfaces. Cards are opaque so text contrast never depends on the decorative canvas. ──── */
+  --surface-canvas: 244 246 246;
+  --surface-1: 249 250 250;
+  --surface-2: 255 255 255;
+  --surface-3: 252 253 253;
+  --border-subtle: 226 231 231;
+  --border-strong: 203 210 210;
+
+  /* ── Status = stage, cool hues. Distinguished by hue AND lightness, so greyscale still reads. */
+  --status-open: 37 99 190;
+  --status-open-soft: 226 236 250;
+  --status-open-ink: 24 66 128;
+  --status-progress: 108 74 190;
+  --status-progress-soft: 236 231 250;
+  --status-progress-ink: 72 48 130;
+  --status-done: 13 127 111;
+  --status-done-soft: 220 242 237;
+  --status-done-ink: 8 84 74;
+
+  /* ── Semantic. Warm hues are reserved for priority, never for stage. ──────────────────────── */
+  --info: 37 99 190;
+  --info-soft: 226 236 250;
+  --info-ink: 24 66 128;
+  --success: 22 128 82;
+  --success-soft: 222 244 233;
+  --success-ink: 14 84 54;
+  --warning: 168 100 12;
+  --warning-soft: 252 240 219;
+  --warning-ink: 112 66 8;
+  --danger: 186 45 45;
+  --danger-soft: 252 230 230;
+  --danger-ink: 124 28 28;
+  --accent: 168 84 24;
+  --accent-soft: 252 237 224;
+  --accent-ink: 112 55 15;
+
+  /* ── Typography. Self-hosted faces are dropped into public/fonts and named here; until a brand
+        package supplies them the stack falls back to the platform UI font. ────────────────────── */
+  --font-ui: "ResolveDesk Sans", ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-brand: "ResolveDesk Display", var(--font-ui);
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, monospace;
+
+  --text-micro: 0.6875rem;
+  --text-meta: 0.75rem;
+  --text-ui: 0.875rem;
+  --text-ui-lg: 1rem;
+  --text-title-sm: 1.125rem;
+  --text-title: 1.5rem;
+
+  /* ── Elevation and shape. ─────────────────────────────────────────────────────────────────── */
+  --radius-card: 1rem;
+  --radius-control: 0.75rem;
+  --shadow-soft: 0 1px 2px rgb(var(--ink-950) / 0.04), 0 1px 3px rgb(var(--ink-950) / 0.06);
+  --shadow-elevated: 0 4px 6px rgb(var(--ink-950) / 0.05), 0 12px 24px rgb(var(--ink-950) / 0.08);
+  --shadow-focus: 0 0 0 4px rgb(var(--brand-500) / 0.25);
+  --shadow-brand: 0 8px 24px rgb(var(--brand-600) / 0.24);
+}
+
+/* Same token names, redefined. No component ever hardcodes a dark colour. */
+.dark {
+  --brand-50: 5 42 37;
+  --brand-100: 6 56 49;
+  --brand-200: 8 74 65;
+  --brand-300: 10 97 85;
+  --brand-400: 13 127 111;
+  --brand-500: 23 158 138;
+  --brand-600: 52 184 162;
+  --brand-700: 108 210 191;
+  --brand-800: 165 230 218;
+  --brand-900: 214 244 238;
+  --brand-on-primary: 6 28 25;
+  --brand-gradient: linear-gradient(135deg, rgb(var(--brand-300)), rgb(var(--brand-400)) 45%, rgb(var(--brand-500)));
+
+  --ink-50: 16 21 21;
+  --ink-100: 24 30 30;
+  --ink-200: 34 41 41;
+  --ink-300: 52 61 61;
+  --ink-400: 146 156 156;   /* per-theme: muted text on dark, still >= 4.5:1 */
+  --ink-500: 168 178 178;
+  --ink-600: 190 199 199;
+  --ink-700: 209 216 216;
+  --ink-800: 228 233 233;
+  --ink-900: 243 246 246;
+  --ink-950: 250 252 252;
+
+  /* Slightly warm rather than pure black — avoids OLED strobing on scroll. */
+  --surface-canvas: 14 18 18;
+  --surface-1: 19 24 24;
+  --surface-2: 25 31 31;
+  --surface-3: 30 37 37;
+  --border-subtle: 43 52 52;
+  --border-strong: 62 72 72;
+
+  --status-open: 122 168 240;
+  --status-open-soft: 22 38 62;
+  --status-open-ink: 176 204 250;
+  --status-progress: 168 146 240;
+  --status-progress-soft: 38 30 64;
+  --status-progress-ink: 206 194 250;
+  --status-done: 82 196 174;
+  --status-done-soft: 12 46 41;
+  --status-done-ink: 168 230 218;
+
+  --info: 122 168 240;
+  --info-soft: 22 38 62;
+  --info-ink: 176 204 250;
+  --success: 82 190 140;
+  --success-soft: 14 46 33;
+  --success-ink: 168 226 198;
+  --warning: 226 168 74;
+  --warning-soft: 56 40 14;
+  --warning-ink: 244 214 160;
+  --danger: 238 122 122;
+  --danger-soft: 62 24 24;
+  --danger-ink: 250 190 190;
+  --accent: 232 152 92;
+  --accent-soft: 58 34 18;
+  --accent-ink: 246 206 176;
+
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
+  --shadow-elevated: 0 4px 6px rgb(0 0 0 / 0.4), 0 12px 24px rgb(0 0 0 / 0.5);
+}

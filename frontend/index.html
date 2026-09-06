@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/brand/logo.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!--
+      The browser paints its own chrome (address bar, status bar, PWA title bar) with this colour, and
+      a single fixed value stays dark in light mode — the one part of the UI the stylesheet cannot
+      reach. Two media-scoped tags give the right answer before any script runs; theme.tsx then
+      overrides them, because the *app's* theme can differ from the operating system's.
+    -->
+    <meta name="theme-color" content="#f4f6f6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1212" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="ResolveDesk — call-center ticket routing with answers drawn from past resolutions." />
+    <title>ResolveDesk</title>
+    <script>
+      // Applied before first paint so a dark-mode reload never flashes the light theme.
+      (() => {
+        try {
+          const stored = localStorage.getItem("resolvedesk.theme") ?? "system";
+          const dark = stored === "dark" ||
+            (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark", dark);
+          document.documentElement.style.colorScheme = dark ? "dark" : "light";
+          // An explicit choice must win over the media-scoped tags above.
+          if (stored !== "system") {
+            for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.remove();
+            const meta = document.createElement("meta");
+            meta.name = "theme-color";
+            meta.content = dark ? "#0e1212" : "#f4f6f6";
+            document.head.appendChild(meta);
+          }
+        } catch { /* private mode — fall back to light */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

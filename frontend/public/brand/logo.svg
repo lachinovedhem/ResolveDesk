@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ResolveDesk">
+  <!--
+    Product mark: a rounded square with a contrasting glyph — a speech mark (the incoming call) whose
+    tail resolves into a check (the answer found in history). It carries its own fixed colours and is
+    never recoloured by the UI palette; that is why the hex values here are intentional.
+  -->
+  <rect width="64" height="64" rx="16" fill="#08544a" />
+  <path d="M18 22h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-8 7v-7h-4a4 4 0 0 1-4-4V26a4 4 0 0 1 4-4Z"
+        fill="#ffffff" opacity="0.14" />
+  <path d="M23 33.5 29 39.5 42.5 26"
+        fill="none" stroke="#ffffff" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round" />
+</svg>

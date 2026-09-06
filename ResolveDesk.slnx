@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ResolveDesk.Application/ResolveDesk.Application.csproj" />
+    <Project Path="src/ResolveDesk.Core/ResolveDesk.Core.csproj" />
+    <Project Path="src/ResolveDesk.Infrastructure/ResolveDesk.Infrastructure.csproj" />
+    <Project Path="src/ResolveDesk.Mcp/ResolveDesk.Mcp.csproj" />
+    <Project Path="src/ResolveDesk.WebApi/ResolveDesk.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ResolveDesk.Tests/ResolveDesk.Tests.csproj" />
+  </Folder>
+</Solution>
